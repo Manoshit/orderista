@@ -1,0 +1,134 @@
+#order{
+	font-family: 'ZCOOL KuaiLe', cursive;
+
+
+}
+
+
+
+#location{
+	padding-top: 10px;
+}
+#aftersearch{
+	background-color: #171a29;
+
+
+}
+.p1{
+	color: white;
+	text-align: center;
+	font-size: 2vw;
+	font-family: 'Dancing Script', cursive;
+
+}
+hr {
+	background-color: white;
+	display: block;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	margin-left: auto;
+	margin-right: auto;
+	border-style: inset;
+	border-width: 1px;
+}
+
+ 
+  #login-button{
+  	border: none;
+  }
+ 
+ .list{
+  background-color: #fff;
+  position: fixed;
+  top:0;
+  width:100%;
+  list-style:none;
+  display: inline-flex;
+  z-index: 9999999;
+  padding:20px;
+  margin: 0 auto;
+}
+
+  body {
+  background-color: #000;
+}
+
+#landing-header {
+  z-index: 1;
+  position: relative;
+  text-align: center;
+  padding-top: 40vh;
+}
+
+#landing-header h1 {
+  color: #fff;
+}
+
+.slideshow { 
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.slideshow li { 
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    z-index: 0;
+    animation: imageAnimation 50s linear infinite;
+}
+
+
+.slideshow li:nth-child(1) { 
+    background-image: url(https://foodrevolution.org/wp-content/uploads/2018/04/blog-featured-diabetes-20180406-1330.jpg);
+}
+.slideshow li:nth-child(2) { 
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg);
+    animation-delay: 10s;
+}
+.slideshow li:nth-child(3) { 
+    background-image: url(https://cdn.firstcrycdn.com/2018/03/446808145-H.jpg);
+    animation-delay: 20s;
+}
+.slideshow li:nth-child(4) { 
+    background-image: url(https://files.guidedanmark.org/files/483/164930_Street-Food.jpg);
+    animation-delay: 30s;
+}
+.slideshow li:nth-child(5) { 
+    background-image: url(https://www.gannett-cdn.com/-mm-/46d53e504090af5eb522362d2757f9df684f5f58/c=0-34-642-395/local/-/media/2019/01/24/USATODAY/usatsports/Reviewed.com-RvEW-20872-GettyImages-589415708.jpg?width=3200&height=1680&fit=crop=);
+    animation-delay: 40s;
+}
+
+@keyframes imageAnimation { 
+  0% { 
+    opacity: 0; 
+    animation-timing-function: ease-in;
+  }
+  10% {
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  20% {
+    opacity: 1
+  }
+  30% {
+    opacity: 0
+  }
+}
+
+/* Older browser support - class added by modernizr */
+.no-cssanimations .slideshow li {
+	opacity: 1;
+}

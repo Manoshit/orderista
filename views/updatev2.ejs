@@ -1,0 +1,64 @@
+ <% include partials/header %>
+  <link rel="stylesheet" type="text/css" href="css/menu.css">
+
+
+
+
+
+  <div class="form-container">
+  	<form class="form-horizontal" method="POST" action="/update">
+  		<fieldset>
+  			<!-- Form Name -->
+  			<legend class="title"></legend>
+        <div>
+          <% for(var i = 0; i<result.length ;i++){ %>
+  				  <div class="form-group " >
+             <div class="row">
+               <div class="col-md-2"></div>
+
+      
+      
+      <div class="col-md-12 col-sm-12">
+        <input type="text" value = "<%= locals.result[0].item %>" class="form-control" name="item" id="item">
+      </div>
+      <div class="col-md-12 col-sm-12">
+        <input type="text"  class="form-control" value = "<%= locals.result[0].type %>" name="type"  >
+          
+      </div>
+      <div class="form-group col-md-12 col-sm-12">
+        
+        <input type="text" class="form-control"  value="<%= locals.result[0].category %>" name="category">
+          
+    
+      </div>
+      <div class="col-md-12 col-sm-12">
+        <input type="text"  name="price" class="form-control" value="<%= locals.result[0].price%>" name="price">
+      </div>
+      <!-- End of fields-->
+      <div class="col-md-12 col-sm-12">
+        <p class="delete" onclick="  $(this).closest('.form-group').remove(); " id="btn1" >x</p>
+      </div>
+    </div>
+  </div>
+<% } %>
+  			
+  			<!-- Button -->
+  			<div class="form-group">
+  				<div class="row">
+  					
+  					<div class="col-md-12"></div>
+  					<div class="col-md-12">
+  						<button id="singlebutton"  type="submit" class="btn btn-dark btn-block">UPDATE</button>
+  					</div>
+  				</div>
+  			</div>
+  		</fieldset>
+  	</form>
+  </div>
+
+  <form>
+    <input type="text" id="test" value="">
+  </form>
+ 
+
+<% include partials/footer %>

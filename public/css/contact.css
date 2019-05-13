@@ -1,0 +1,49 @@
+#order{
+	font-family: 'ZCOOL KuaiLe', cursive;
+	font-size: 2vw;
+
+
+}
+
+ 
+  #login-button{
+  	border: none;
+  }
+  #modal-title{
+  
+  	background-color:  #171a29;
+  	font-family: 'ZCOOL KuaiLe', cursive;
+  }
+  #modal-title1{
+  	color: white;
+  	font-family: 'ZCOOL KuaiLe', cursive;
+  	font-size: 2vw;
+  }
+   #modal-title2{
+  	color: white;
+  	font-family: 'ZCOOL KuaiLe', cursive;
+  	font-size: 2vw;
+  }
+  #contact-cover{
+  	background-image:  url('/images/contact-us.webp');
+  	height: auto;
+  	background-size: cover;
+  	width: auto;
+  	background-repeat: no-repeat;
+  	
+
+  }
+  #contact-text{
+  	font-size:1.5rem;
+  	color: white;
+  	font-family: 'ZCOOL KuaiLe', cursive;
+  	text-align: center;
+  	padding-top: 150px;
+  	padding-bottom: 150px;
+  }
+  #form{
+  	padding: 20px;
+  }
+ .text1{
+ 	font-family: 'ZCOOL KuaiLe', cursive;
+ }

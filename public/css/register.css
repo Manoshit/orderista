@@ -1,0 +1,18 @@
+#order{
+	font-family: 'ZCOOL KuaiLe', cursive;
+	font-size: 2vw;
+	color: white;
+
+}
+#div1{
+	background: url('/images/panda.png');
+	background-repeat: no-repeat;
+	background-position: right-top;
+	background-size:contain;
+}
+#card{
+	padding-top: 20px;
+}
+#benefit{
+	padding: 40px;
+}

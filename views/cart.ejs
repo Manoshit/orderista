@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shopping Cart</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/stylee.css">
+  <script src="https://code.jquery.com/jquery-2.2.4.js" charset="utf-8"></script>
+  <meta name="robots" content="noindex,follow" />
+  <style type="text/css">
+    
+  @media screen and (max-width: 600px) {
+
+
+    #total{
+      padding-right: 40%;
+    }
+  }
+    @media screen and (min-width: 600px) {
+
+
+    #total{
+      padding-right: 23%;
+    }
+  }
+  </style>
+</head>
+<body>
+  <div class="shopping-cart">
+    <!-- Title -->
+    <div class="title">
+      Shopping Bag
+    </div>
+<% for(var i = 0 ; i < result.length; i++){%>
+    <!-- Product #1 -->
+    <div class="item">
+      <div class="buttons">
+        <span class="delete-btn"></span>
+
+      </div>
+
+      <div class="image">
+        <img src="item-1.png" alt="" />
+      </div>
+
+      <div class="description">
+        <span><strong><%=locals.result[i].item%></strong></span>
+      </div>
+
+      <div class="quantity">
+        <span>QTY</span>
+        <span><input type="text" name="name" value="<%=locals.result[i].quantity%>"></span>
+
+      </div>
+
+      <div class="total-price">
+        <span>Rs</span>
+        <span><%= result[i].price * result[i].quantity %></span> 
+
+      </div>
+    </div>
+<%}%>
+
+
+      <div id="total" align="right">Total  <%=locals.sum%></div>
+        <a href="#" class="btn btn-success m-2"> Checkout <i class="fa fa-angle-right"></i></a>
+  
+
+
+
+  </div> 
+
+
+  <script type="text/javascript">
+    $('.minus-btn').on('click', function(e) {
+      e.preventDefault();
+      var $this = $(this);
+      var $input = $this.closest('div').find('input');
+      var value = parseInt($input.val());
+
+      if (value > 1) {
+       value = value - 1;
+     } else {
+       value = 0;
+     }
+
+     $input.val(value);
+
+   });
+
+    $('.plus-btn').on('click', function(e) {
+      e.preventDefault();
+      var $this = $(this);
+      var $input = $this.closest('div').find('input');
+      var value = parseInt($input.val());
+
+      if (value < 100) {
+        value = value + 1;
+      } else {
+       value =100;
+     }
+
+     $input.val(value);
+   });
+
+    $('.like-btn').on('click', function() {
+      $(this).toggleClass('is-active');
+    });
+    $('.delete-btn').on('click', function(e) {
+     $(this).parent().parent().hide();
+   });
+
+
+ </script>
+</body>
+</html>

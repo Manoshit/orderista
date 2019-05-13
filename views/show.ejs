@@ -1,0 +1,417 @@
+ <!DOCTYPE html>
+ <html>
+ <head>
+ 	<title></title>
+ 	<meta charset="utf-8">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+ 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+ 	<link href="https://fonts.googleapis.com/css?family=Staatliches" rel="stylesheet">
+ 	<link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+
+ 	<link rel="stylesheet" type="text/css" href= "/css/home.css">
+ 	<link rel="stylesheet" type="text/css" href="/css/style.css">
+ 	<link rel="stylesheet" type="text/css" href="/css/drop.css">
+ 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+ 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+ 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+ 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ 	<script type="text/javascript" src="food/home.js"></script>
+ 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
+ 	<style type="text/css">
+ 	body{
+ 		background-color: #ebeef4;
+ 	}
+ 	.me{
+
+ 		box-shadow: 0 0 0 1px #099E44 inset!important;
+ 		font-size: 1vw;
+ 		text-transform: uppercase;
+ 		background-color: white;
+ 	}
+
+ 	.mes{
+ 		padding-top: 2%;
+ 	}
+ 	.sticky {
+ 		position: fixed;
+ 		top: 0;
+ 		width:50%;
+ 	}
+ 	.sticky + .content {
+ 		padding-top: 60px;
+ 	}
+ 	.header {
+ 		background-color: #f1f1f1;
+ 		padding: 30px;
+ 		text-align: center;
+ 	}
+
+ 	#navbar {
+ 		overflow: hidden;
+ 		
+ 	}
+
+
+
+ 	#navbar a:hover {
+ 		background-color: #ddd;
+ 		color: black;
+ 	}
+
+ 	#navbar a.active {
+ 		background-color: #4CAF50;
+ 		color: white;
+ 	}
+ 	#butns{
+ 		width: 10%;height:50%;background-color: #E1E8EE;border-radius: 6px;border: none;cursor: pointer;
+ 	}
+
+ 	.add{
+ 		background-color: white ;color:green; text-align: center;
+ 	}
+
+ 	@media screen and (max-width: 600px) {
+
+
+ 		#butns{
+ 			width:10%;
+ 			height:80%;
+ 		}
+
+ 	}
+
+ </style>
+</head>
+<body  data-spy="scroll" data-target=".spy" data-offset="50"  >
+	<nav class="navbar navbar-expand-lg bg-dark navbar-dark  " >
+		<div class="container">
+			<a class="navbar-brand" href="/"><h1 id="order"> <i class="fas fa-utensils"></i> ORDERISTA </h1></a>
+
+
+			<!-- Dropdown button -->
+			<button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<!-- Navbar links -->
+
+			<div class="collapse navbar-collapse" id="collapsibleNavbar">
+				<ul class="navbar-nav">
+					<li class="nav nav-item">
+						<a class="nav-link" href="/">HOME</a>
+
+					</li>
+
+					<li class="nav nav-item">
+						<a class="nav-link" href="/conatct">CONTACT US</a>
+
+					</li></ul> 
+				</div>
+				<div class="collapse navbar-collapse justify-content-end  " id="collapsibleNavbar"> 	
+
+					<ul class="navbar-nav ">
+						<%   if(!currentuser){ %>
+						<li class=" nav nav-item">
+							<a class="nav-link" href="/login">LOG IN<i class="fas fa-user-alt"></i>
+							</a>
+						</li>
+						<li class=" nav nav-item">
+							<a  href="/signup" class="nav-link">SIGN UP
+								<i class="fa fa-user-plus"></i> 
+							</a>
+
+						</li>
+						<%  	} else if (currentuser.isAdmin){ %>
+
+						<li class=" nav nav-item">
+							<a  href="/cart" class="nav-link">CART
+
+							</a>
+							
+						</li>
+						<li class=" nav nav-item">
+							<div class="dropdown">
+								<button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									DASHBOARD
+								</button>
+								<div class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+									<a class="dropdown-item" href="/profile">PROFILE</a>
+									<a class="dropdown-item" href="#">Some other action</a>
+									<div class="dropdown-divider"></div>
+									<div class="dropdown-submenu">
+										<a  class="dropdown-item" tabindex="-1" href="#">RESTAURANT MENU</a>
+										<ul class="dropdown-menu">
+											<a class="dropdown-item" tabindex="-1" href="/add">ADD</a>
+											<a class="dropdown-item" href="/update">UPDATE</a>
+										</ul>
+									</div>
+
+								</div>
+
+							</div>
+
+						</li>
+						<li class=" nav nav-item">
+							<a  href="/logout" class="nav-link">LOG OUT
+								<i class="fas fa-sign-out-alt"></i>
+							</a>
+
+						</li>
+
+						<% } else if(currentuser) { %>
+						<li class=" nav nav-item">
+							<a  href="/cart" class="nav-link">CART
+							
+							</a>
+							
+						</li>
+
+						<li class=" nav nav-item">
+							<a  href="/logout" class="nav-link">LOG OUT
+								<i class="fas fa-sign-out-alt"></i>
+							</a>
+
+						</li>
+
+
+						<% } %>
+					</ul>
+
+				</div>
+
+				<!-- end of navbar links -->
+
+			</div>
+
+		</nav>
+		<div class="col-md-5 mx-auto pt-3">
+			<% if (error && error.length>0) { %>
+			<p class="alert alert-danger" role="alert"><%= error %></p>
+			<% } %>
+			<% if (success && success.length>0) { %>
+			<p class="alert alert-success" role="alert"><%= success %></p>
+			<% } %>
+		</div>
+		<div style="padding: 30px;">
+
+		</div>
+
+
+		<div class="container border border-light rounded " style="background-color: white;" >
+			<div class="row pt-3 pl-2" >
+				<p class = "text-muted"> ORDER FOOD ONLINE FROM</p></div>
+				<div class="row pl-2" >
+					<p><h3><%= found[0].name %></h3></p></div>
+					<div class="row pl-2 pt-2">
+						<p class="text-muted"> <%=found[0].address%>  ||   Costs <%=found[0].cost %> for two </p></div>
+						<hr>
+						<div class="row">
+							<div class="pl-3 col-md-6">
+								<p class="text-muted">Minimum Order</p>
+								<p >RS 0.00</p>
+							</div>
+							<div class="pl-3 col-md-6">
+								<p class="text-muted">Modes Of Payment</p>
+								<p >Cash And Online</p>
+							</div>
+
+						</div>
+					</div>
+					<div class="p-2">
+
+					</div>
+
+					<div class="container">
+						<div class="row" id="navbar">
+							<div class="col-lg-12">
+								<nav class="navbar navbar-expand-sm bg-light navbar-light spy ">  
+									<ul class="navbar-nav">
+										<% for(var i = 0; i< ucategory.length;i++){ %>
+										<li class="nav-item">
+											<a class="nav-link" href="#section<%=i%>"><%= ucategory[i].category %></a>
+										</li>
+										<%}%>
+
+										
+									</ul>
+								</nav>
+							</div>
+						</div>
+						<% for(var i = 0; i< ucategory.length;i++){ %>
+						<div class="p-2">
+
+						</div><div class="row">
+							<div class="col-lg-12">
+								<%=ucategory[i].category%>
+							</div>
+						</div>
+
+						<% for(var j = 0; j< updated[0].item.length;j++){ if (updated[0].category[j] == ucategory[i].category){ %>
+						
+
+						
+						<div class=" row bg-light" >
+
+
+
+							<div class="col-md-5 col -xs-6 mes form-row ">
+
+
+								<% if(updated[0].type[j]=="Non-Veg"){ %>
+
+								<p class="pt-1"><img src="https://img.icons8.com/color/24/000000/non-vegetarian-food-symbol.png" class="img-responsive"></p>
+
+								<p><input type="text" readonly class="form-control-plaintext btn<%=j%>" value="<%= locals.updated[0].item[j] %>"></p>
+								<p><input type="text" readonly class="form-control-plaintext  btn<%=j%>" value="<%= locals.updated[0].price[j]  %>"></p>
+
+
+						
+								<%}else{%>
+
+								<p class="pt-1"><img src="https://img.icons8.com/color/24/000000/vegetarian-food-symbol.png" class="img-responsive "></p>
+
+
+								<p ><input type="text" readonly class="form-control-plaintext btn<%=j%>" value="<%= locals.updated[0].item[j] %>"></p>
+								<p ><input type="text" readonly class="form-control-plaintext btn<%=j%>" value="<%= locals.updated[0].price[j] %>"></p>
+
+
+
+								<%}%>
+
+							</div>
+
+							
+
+
+
+							<div class="col-md-2 mes form-row">
+								
+
+							</div>
+							<div class="quantity col -md-5 col -xs-6  mes">
+								<button class="minus-btn" style="  " id="butns" type="button" name="button">
+									<img src="/images/minus.svg" alt=""  class="img-responsive chota ">
+								</button>
+								<input type="text" value="1" class="input btn<%=j%>">
+								<button class="plus-btn"  type="button" id="butns" name="button">
+									<img src="/images/plus.svg" alt=""  class="img-responsive chota ">
+								</button>
+
+								<button  onclick= " myfunction(this.id);" class="btn btn-sm btn-success ml-4 add" id="btn<%=j%>"  >
+								ADD</button>
+							</div>
+							
+
+
+						</div>
+						<div class="row bg-light">
+							<div class="col-lg-12">
+								<hr>
+							</div>
+						</div>
+						<%}%>
+
+						<%}%>
+
+						
+						<%}%>
+					</div>
+					<input type="hidden" name="res_name" value="<%=locals.found[0].name%>" id="res_name">
+				</body>
+
+				<script type="text/javascript">
+					/*sticky menu bar*/
+					window.onscroll = function() {myFunction()};
+					var navbar = document.getElementById("navbar");
+					var sticky = navbar.offsetTop;
+					function myFunction() {
+						if (window.pageYOffset >= sticky) {
+							navbar.classList.add("sticky")
+						} else {
+							navbar.classList.remove("sticky");
+						}
+					}
+
+					/*add item*/
+					$('.minus-btn').on('click', function(e) {
+						e.preventDefault();
+						var $this = $(this);
+						var $input = $this.closest('div').find('input');
+						var value = parseInt($input.val());
+
+						if (value > 1) {
+							value = value - 1;
+						} else {
+							value = 0;
+						}
+
+						$input.val(value);
+
+					});
+
+					$('.plus-btn').on('click', function(e) {
+						e.preventDefault();
+						var $this = $(this);
+						var $input = $this.closest('div').find('input');
+						var value = parseInt($input.val());
+
+						if (value < 100) {
+							value = value + 1;
+						} else {
+							value =100;
+						}
+
+						$input.val(value);
+					});
+
+
+					function myfunction(id){
+						console.log(id);
+
+
+
+						var items = document.getElementsByClassName(id);
+						var res = document.getElementById("res_name").value;
+		if ("geolocation" in navigator){ //check geolocation available 
+		//try to get user current location using getCurrentPosition() method
+		navigator.geolocation.getCurrentPosition(function(position){ 
+			lat=position.coords.latitude;
+			long=position.coords.longitude;
+
+			request(items[0].value,items[1].value,items[2].value,lat,long,res);
+
+		});
+	}else{
+		console.log("Browser doesn't support geolocation!");
+		request(items[0].value,items[1].value,items[2].value);
+	}
+
+	
+
+}
+
+
+
+
+function request(item,price,value,lat,long,res) {
+            // console.log("I am making Ajax Request");
+            $.ajax({
+            	type: "POST",
+            	url: "/cart",
+            	data: {'item': item,'price':price,'value':value,'lat':lat,'long':long,'res_name':res},
+            	success: function (res) {
+            		console.log(res);
+            	}
+            });
+            //  $("#"+id1+"1").hide();
+            // $("#"+id1+"2").hide();
+
+            alert('ITEM ADDED TO CART');
+        }
+    </script>
+
+</body>
+</html>

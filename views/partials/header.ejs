@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Staatliches" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href= "/css/home.css">
+	<link rel="stylesheet" type="text/css" href="/css/contact.css">
+	<link rel="stylesheet" type="text/css" href="/css/drop.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="food/home.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg bg-dark navbar-dark list " >
+		<div class="container">
+			<a class="navbar-brand" href="/"><h1 id="order" style="font-size: 1.5rem;"> <i class="fas fa-utensils"></i> ORDERISTA </h1></a>
+
+
+			<!-- Dropdown button -->
+			<button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<!-- Navbar links -->
+
+			<div class="collapse navbar-collapse" id="collapsibleNavbar">
+				<ul class="navbar-nav">
+					<li class="nav nav-item">
+						<a class="nav-link" href="/">HOME</a>
+
+					</li>
+
+					<li class="nav nav-item">
+						<a class="nav-link" href="/conatct">CONTACT US</a>
+
+					</li></ul> 
+				</div>
+				<div class="collapse navbar-collapse justify-content-end  " id="collapsibleNavbar"> 	
+
+					<ul class="navbar-nav ">
+						<%   if(!currentuser){ %>
+						<li class=" nav nav-item">
+							<a class="nav-link" href="/login">LOG IN<i class="fas fa-user-alt"></i>
+							</a>
+						</li>
+						<li class=" nav nav-item">
+							<a  href="/signup" class="nav-link">SIGN UP
+								<i class="fa fa-user-plus"></i> 
+							</a>
+							
+						</li>
+						<%  	} else if (currentuser.isAdmin){ %>
+						<li class=" nav nav-item">
+							<a  href="/cart" class="nav-link">CART
+						
+							</a>
+							
+						</li>
+
+						<li class=" nav nav-item">
+							<div class="dropdown">
+								<button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									DASHBOARD
+								</button>
+								<div class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+									<a class="dropdown-item" href="/profile">PROFILE</a>
+									
+									<div class="dropdown-divider"></div>
+									<div class="dropdown-submenu">
+										<a  class="dropdown-item" tabindex="-1" href="#">RESTAURANT MENU</a>
+										<ul class="dropdown-menu">
+											<a class="dropdown-item" tabindex="-1" href="/add">ADD</a>
+											<a class="dropdown-item" href="/update">UPDATE</a>
+										</ul>
+									</div>
+
+								</div>
+
+							</div>
+							
+						</li>
+						<li class=" nav nav-item">
+							<a  href="/logout" class="nav-link">LOG OUT
+								<i class="fas fa-sign-out-alt"></i>
+							</a>
+							
+						</li>
+						
+						<% } else if(currentuser) { %>
+						<li class=" nav nav-item">
+							<a  href="/cart" class="nav-link">CART
+							
+							</a>
+							
+						</li>
+						<li class=" nav nav-item">
+							<a  href="/logout" class="nav-link">LOG OUT
+								<i class="fas fa-sign-out-alt"></i>
+							</a>
+							
+						</li>
+						
+						
+
+						<% } %>
+					</ul>
+
+				</div>
+
+				<!-- end of navbar links -->
+
+			</div>
+
+		</nav>
+		<div class="col-md-5 mx-auto pt-3">
+			<% if (error && error.length>0) { %>
+			<p class="alert alert-danger" role="alert"><%= error %></p>
+			<% } %>
+			<% if (success && success.length>0) { %>
+			<p class="alert alert-success" role="alert"><%= success %></p>
+			<% } %>
+		</div>

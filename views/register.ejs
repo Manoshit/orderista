@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+</head>
+
+
+<script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+  	apiKey: "AIzaSyCa1ozgdN4TxJlyXm_XbpD5sU81CtDCwoo",
+  	authDomain: "orderista-8b9b2.firebaseapp.com",
+  	databaseURL: "https://orderista-8b9b2.firebaseio.com",
+  	projectId: "orderista-8b9b2",
+  	storageBucket: "orderista-8b9b2.appspot.com",
+  	messagingSenderId: "49864872164"
+  };
+  firebase.initializeApp(config);
+</script>
+
+<script type="text/javascript">
+	var selectedFile;
+	function getfile()
+	{
+		console.log("hello");
+		var pic = document.getElementById("photo");
+		selectedFile = pic.files[0];
+		console.log(selectedFile);
+		document.getElementById('submit_link').setAttribute('disabled','true');
+		myfunction();
+	}
+	function myfunction()
+	{  
+		var name = document.getElementById('inputEmail4').value;
+		var storageRef = firebase.storage().ref('/images/'+ name);
+		var uploadTask = storageRef.put(selectedFile);
+		uploadTask.on('state_changed', function(snapshot){
+			var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			var uploader = document.getElementById('uploader');
+			uploader.value=progress;
+			switch (snapshot.state) {
+				case firebase.storage.TaskState.PAUSED: 
+				console.log('Upload is paused');
+				break;
+				case firebase.storage.TaskState.RUNNING: 
+				console.log('Upload is running');
+				break;
+			}
+		}, function(error) {console.log(error);
+		}, function() {
+			uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+				console.log('File available at', downloadURL);
+				console.log(downloadURL);
+				document.getElementById('link_image').value=downloadURL;
+				console.log("hello");
+				document.getElementById('submit_link').removeAttribute('disabled');
+				console.log("hello");
+			});
+		});
+	};
+</script>
+
+
+<body>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Staatliches" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="/css/register.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="food/home.js"></script>
+	<div class="bg-dark">
+		<div class="container">
+			<div class="row ">
+				<div class="col-md-12">
+					<a class=" navbar-brand nav-link"  href="/"><h1 style="  font-family: 'ZCOOL KuaiLe', cursive;font-size: 1.5rem;color: white"><i class="fas fa-utensils"></i> ORDERISTA</h1></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="div1">
+		<div class="container" >
+			<div class="row" id="card" >
+				<div class="col-md-5" >
+
+				</div>
+
+				<div class="col-md-7" >
+					<div class="card" >
+						<div class="card-body">
+							<p>PARTNER WITH US</p>
+							<form method="POST" action="/addrestro">
+								<div class="form-row">
+									<div class="form-group col-md-12">
+										<label> Email</label>
+										<input type="email" class="form-control" id="inputEmail4" value ="<%= locals.currentuser.username %>" name="Email" required>
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-md-12">
+										<label> Restaurant Name</label>
+										<input type="text" class="form-control" id="inputEmail4" placeholder="Restaurant Name" name="name" required>
+									</div>
+
+								</div>
+								<div class="form-row ">
+									<label>Enter Your Location</label>
+									<div class="form-group col-md-12">
+										<input id="autocomplete" 
+										type="text" name="api" onkeydown="prevententer(event);" style="width: 100%" required >
+										<br>
+										<input type="hidden" id="profile_lat" name="profile_lat">
+
+										<input type="hidden" id="profile_lng" name="profile_lng">
+
+									</div>	
+								</div>
+								<div class="form-row ">						
+									<div class="form-group col-md-12">
+										<label > Complete Address</label>
+										<input type="text" class="form-control" id="inputAddress" placeholder="Address" name="address" required>
+									</div>
+								</div>
+								<div class="form-row ">
+									<div class="form-group col-md-12">
+										<label >Phone Number</label>
+										<input type="text" class="form-control" id="inputAddress" placeholder="Enter restaurant phone number" name="phoneno" required>
+									</div>
+								</div>
+
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label for="inputState">Cost For Two</label>
+										<select id="inputState" class="form-control" name="cost" required>
+											<option selected>Cost for two</option>
+											<option>200</option>
+											<option>200-400</option>
+											<option>400-800</option>
+											<option>1000+</option>
+										</select>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="inputState">Type Of Cuisine</label>
+										<select id="inputState" class="form-control" name="type" required>
+											<option selected> Type Of Cuisine</option>
+											<option>North Indian</option>
+											<option>South Indian</option>
+											<option>Chineese</option>
+											<option>Continental</option>
+										</select>
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<input type="hidden" id="link_image" name="link_image">
+									<strong>Image </strong><input type="file" onchange="getfile()" id="photo"><br><br>
+									<strong>Progress Bar</strong><br><progress value="0" id="uploader" max="100">0%</progress><br><br>
+									<button id="submitBtngg" onclick="myfunction()" style="display: none;"></button>	 
+								</div>
+								<!--
+								<div class="form-group">
+									<label>Restaurant Image</label>
+									<div class="custom-file">
+
+										<input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" name="image">
+										<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+									</div>
+
+								</div>
+							-->
+
+							<div class="form-row">
+								<div class="form-group col-md-12">
+									<button type="submit" id="submit_link" class="btn btn-dark btn-block ">REGISTER</button>
+								</div>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<div  class="bg-dark">
+	<div class="container">
+		<div class="row" id="benefit">
+			<div class="col-md-12" >
+				<img   class=" img-fluid" src="images/benefit.png">
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+</body>
+
+
+<script>
+
+	var prevententer=function(event){
+		if(event.keyCode==13){
+			event.preventDefault();
+		}
+	}
+	var placeSearch, autocomplete;
+	function initAutocomplete() {
+		autocomplete = new google.maps.places.Autocomplete(
+			(document.getElementById('autocomplete')),
+			{types: ['geocode']});
+		autocomplete.addListener('place_changed', fillInAddress);
+	}
+
+	function fillInAddress() {
+		var place = autocomplete.getPlace();
+		console.log(place);
+		var lat=place.geometry.location.lat();
+		var lng=place.geometry.location.lng();
+		initMap2(lat,lng);
+		for (var component in componentForm) {
+			document.getElementById(component).value = '';
+			document.getElementById(component).disabled = false;
+		}
+		for (var i = 0; i < place.address_components.length; i++) {
+			var addressType = place.address_components[i].types[0];
+			if (componentForm[addressType]) {
+				var val = place.address_components[i][componentForm[addressType]];
+				console.log(val);
+				document.getElementById(addressType).value = val;
+			}
+		}
+	}
+	function initMap2(latt,lngg) {
+		console.log(latt);
+		console.log(lngg);
+		document.getElementById('profile_lat').value=latt;
+		document.getElementById('profile_lng').value=lngg;
+	} 
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_Iz3BFd2uUKN0OQVKlmc2Kw5YAad0508&libraries=places&callback=initAutocomplete"
+async defer>
+</script>
+</html>

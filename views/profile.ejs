@@ -1,0 +1,49 @@
+  <% include partials/header %>
+
+  <div class="conatiner">
+  	<div class="row" style="padding: 20px;">
+  		<div class="col">
+  			<div class="card w-50" style=" margin: 0 auto; float: none; margin-bottom: 10px;" >
+  				<div class="card-body">
+  					<form method="POST" action="/addrestro">
+  						<div class="form-row">
+  							<div class="form-group col-md-12">
+  								<label> Restaurant Name</label>
+  								<input type="text" class="form-control" id="inputEmail4" value ="<%= locals.rest %>" name="name">
+  							</div>
+
+  						</div>
+
+  						<div class="form-row">
+  							<div class="form-group col-md-6">
+  								<label for="inputCity">City</label>
+  								<input type="text" class="form-control" id="inputCity" value =" <%= locals.city %>" name="city">
+  							</div>
+  							<div class="form-group col-md-6">
+  								<label for="inputState">State</label>
+  								<input type="text" class="form-control" value ="<%= locals.state %>" name="state">
+  							</div>
+  							
+  						</div>
+  						<div class="form-group">
+  							<label >Address</label>
+  							<input type="text" class="form-control" id="inputAddress" value ="<%= locals.address %>" name="address">
+  						</div>
+  						<div class="form-group">
+  							<label >Phone Number</label>
+  							<input type="text" class="form-control" id="inputAddress" value ="<%= locals.phoneno %>" name="phoneno">
+  						</div>
+
+  						
+  						<div class="form-row">
+  							<div class="form-group col-md-12">
+  								<button type="submit" class="btn btn-dark btn-block " >SAVE CHANGES</button>
+  							</div>
+  						</div>
+  					</form>
+  				</div>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+  <% include partials/footer %>
