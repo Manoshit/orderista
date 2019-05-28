@@ -263,6 +263,10 @@ app.get('/pgredirect', function(req,res){
          res.render('testtxn.ejs',{'config' : config});
      });
 
+ app.get("/service-worker.js", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "public", "service-worker.js"));
+});
+
 /***** END OF GET ROUTES ***/
 
 app.post('/contact', (req,res)=>{

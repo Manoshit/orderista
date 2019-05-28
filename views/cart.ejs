@@ -38,7 +38,7 @@
     <!-- Product #1 -->
     <div class="item">
       <div class="buttons">
-        <span class="delete-btn"></span>
+        <span class="delete-btn" onclick="myfunction();"></span>
 
       </div>
 
@@ -47,12 +47,13 @@
       </div>
 
       <div class="description">
-        <span><strong><%=locals.result[i].item%></strong></span>
+        <span ><strong ><%=locals.result[i].item%></strong></span>
+        <input type="hidden"  value="<%=locals.result[i].item%>" id="item">
       </div>
 
       <div class="quantity">
         <span>QTY</span>
-        <span><input type="text" name="name" value="<%=locals.result[i].quantity%>"></span>
+        <span ><input type="text" name="name" value="<%=locals.result[i].quantity%>"></span>
 
       </div>
 
@@ -62,11 +63,12 @@
 
       </div>
     </div>
+
 <%}%>
 
 
       <div id="total" align="right">Total  <%=locals.sum%></div>
-        <a href="#" class="btn btn-success m-2"> Checkout <i class="fa fa-angle-right"></i></a>
+        <a href="/testtxn" class="btn btn-success m-2"> Checkout <i class="fa fa-angle-right"></i></a>
   
 
 
@@ -75,43 +77,17 @@
 
 
   <script type="text/javascript">
-    $('.minus-btn').on('click', function(e) {
-      e.preventDefault();
-      var $this = $(this);
-      var $input = $this.closest('div').find('input');
-      var value = parseInt($input.val());
-
-      if (value > 1) {
-       value = value - 1;
-     } else {
-       value = 0;
-     }
-
-     $input.val(value);
-
-   });
-
-    $('.plus-btn').on('click', function(e) {
-      e.preventDefault();
-      var $this = $(this);
-      var $input = $this.closest('div').find('input');
-      var value = parseInt($input.val());
-
-      if (value < 100) {
-        value = value + 1;
-      } else {
-       value =100;
-     }
-
-     $input.val(value);
-   });
-
-    $('.like-btn').on('click', function() {
-      $(this).toggleClass('is-active');
-    });
+  
     $('.delete-btn').on('click', function(e) {
      $(this).parent().parent().hide();
    });
+
+
+    function myfunction(){
+       var txt = document.getElementById("item");
+       alert(txt);
+
+    }
 
 
  </script>
