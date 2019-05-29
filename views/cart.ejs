@@ -39,7 +39,7 @@
     <!-- Product #1 -->
     <div class="item">
       <div class="buttons">
-        <span class="delete-btn" onclick="myfunction();"></span>
+        <span class="delete-btn" onclick="myfunction(this.id);" id="item<%=i%>"></span>
 
       </div>
 
@@ -47,7 +47,7 @@
 
       <div class="description">
         <span ><strong ><%=locals.result[i].item%></strong></span>
-        <input type="hidden"  value="<%=locals.result[i].item%>" id="item">
+        <input type="hidden"  name="item<%=i%>" value="<%=locals.result[i].item%>" class="item<%=i%>">
       </div>
 
       <div class="quantity">
@@ -74,6 +74,8 @@
     <input type="hidden" name="quantity" value="<%=locals.result[i].quantity%>">
     <input type="hidden" name="price" value="<%= result[i].price * result[i].quantity %>">
     <input type="hidden" name="res_name" value="<%=locals.result[i].res_name%>">
+    <input type="hidden" name="lat" value="<%=locals.result[i].lat%>">
+    <input type="hidden" name="long" value="<%=locals.result[i].long%>">
   </div>
     <%}%>
 
@@ -85,27 +87,41 @@
 
   </div> 
 
-
-
-   <form method="POST" action="/history">
-    <% for (var i = 0 ; i < result.length; i++) {%>
-    <div class="container">
-    <input type="hidden" name="item" value="<%=locals.result[i].item%>">
-    <input type="hidden" name="quantity" value="<%=locals.result[i].quantity%>">
-    <input type="hidden" name="price" value="<%= result[i].price * result[i].quantity %>">
-    <input type="hidden" name="res_name" value="<%=locals.result[i].res_name%>">
-  </div>
-    <%}%>
-    <button type="submit" style="" id="theSubmitButton">hello</button>
-
-    </form>
-
+<input type="hidden" name="res_name" value="<%=locals.result[0].email%>" id="email">
 
   <script type="text/javascript">
-  
+    function myfunction(id){
+            console.log(id);
+
+
+var items = document.getElementsByClassName(id);
+var email = document.getElementById("email").value;
+          request(items[0].value,email)
+          }
+  function request(items,email) {
+            // console.log("I am making Ajax Request");
+            $.ajax({
+              type: "POST",
+              url: "/delete_cart",
+              data: {'items': items,'email':email},
+              success: function (res) {
+                console.log("in ajax");
+              }
+            });
+            //  $("#"+id1+"1").hide();
+            // $("#"+id1+"2").hide();
+
+            alert('Item deleted from cart');
+        }
     $('.delete-btn').on('click', function(e) {
      $(this).parent().parent().hide();
    });
+
+
+
+ 
+
+  
 
 
    

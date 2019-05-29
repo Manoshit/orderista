@@ -131,7 +131,7 @@ app.get('/logout',function(req,res){
 	res.redirect('/');
 });
 
-app.get('/profile',function(req,res) {
+app.get('/profile',isloggedin,function(req,res) {
 
 	db.collection("users").find({username:req.user.username}, { projection: { _id: 0, name: 1, address:1 ,username : 1,}}).toArray(function(err, result) {
 		if (err) throw err;
@@ -147,7 +147,7 @@ app.get('/profile',function(req,res) {
 
 });
 
-app.get('/add',function(req,res) {
+app.get('/add',isloggedin, function(req,res) {
 	res.render('add');
 
 
@@ -168,7 +168,7 @@ app.get('/landing',function(req,res){
 
 })	;
 
-app.get('/update',function(req,res){
+app.get('/update',isloggedin,function(req,res){
 	
 
 	db.collection("restro").find({Email:req.user.username}, { projection: { _id:0, name: 1,is_menu_updated:1 }}).toArray(function(err, result) {
@@ -234,7 +234,7 @@ db.collection("update").find({res_name:found[0].name},{projection:{_id:0}}).toAr
 	});
 })
 
-app.get('/cart',function(req,res){
+app.get('/cart',isloggedin,function(req,res){
 	db.collection("cart").find({email:req.user.username},{projection:{_id:0}}).toArray(function(err,result){
 
 		var sum = 0;
@@ -272,7 +272,23 @@ app.get('/testtxn', function(req,res){
 });
 
 
+app.get('/user_history',isloggedin, function(req,res){
+	db.collection("history").find({email:req.user.username,ispaid:"yes"}).toArray(function(err,result){
+	
+		res.render('user_history.ejs',{result:result});
+	})
+	
+});
+app.get('/admin_history',isloggedin,function(req,res){
+	db.collection("restro").find({Email:req.user.username}).toArray(function(err,result){
 
+      db.collection("history").find({res_name:result[0].name}).toArray(function(err,result1){
+      	res.render('admin_history.ejs',{result:result1});
+
+      });
+	});
+	
+});
 
 app.get("/service-worker.js", (req, res) => {
 	res.sendFile(path.resolve(__dirname, "public", "service-worker.js"));
@@ -293,6 +309,7 @@ app.post('/signup', function(req,res)
 	var name = req.body.name;
 	var username = req.body.username;
 	var password = req.body.password;
+	console.log(req.body);
 
 	req.checkBody('name', 'Name is required').notEmpty();
 	req.checkBody('username', 'email is required').notEmpty();
@@ -460,7 +477,7 @@ app.post('/request', function (req, res) {
 
 
 
-app.post('/cart',function(req,res){
+app.post('/cart', function(req,res){
 
 
 	var obj ={item:req.body.item,quantity:req.body.value,price:req.body.price,lat:req.body.lat,long:req.body.long,res_name:req.body.res_name,email:req.user.username};
@@ -507,21 +524,35 @@ app.post('/cart',function(req,res){
 });
 app.post('/response', function(req,res){
 	console.log("in response post");
+	var myquery= {orderid:req.body.ORDERID};
+	var newvalues={$set:{time:req.body.TXNDATE,txnid:req.body.TXNID,ispaid:"yes",txnamount:req.body.TXNAMOUNT}};
+	db.collection("history").update(myquery,newvalues,function(err,res){
+		console.log(err);
+	});
+
 	var paramlist = req.body;
 	var paramarray = new Array();
 	console.log(paramlist);
 	if(checksum.verifychecksum(paramlist, config.PAYTM_MERCHANT_KEY))
 	{
 		console.log("true");
-		res.render('response.ejs',{ 'restdata' : "true" ,'paramlist' : paramlist});
+		res.render('success.ejs',{ 'restdata' : "true" ,'paramlist' : paramlist});
 	}else        {
 		console.log("false");
 		res.render('response.ejs',{ 'restdata' : "false" , 'paramlist' : paramlist});
 	};
+
 });
 
 
 app.post('/testtxn',function(req, res) {
+
+	var myquery = { email: req.user.username };
+	var newvalues = { $set: {orderid:req.body.ORDER_ID} };
+	db.collection("history").update(myquery,newvalues,function(err,res){
+		console.log(err);
+	});
+
 	console.log("POST Order start");
 	var paramlist = req.body;
 	var paramarray = new Array();
@@ -552,9 +583,10 @@ app.post('/testtxn',function(req, res) {
 
     });
 app.post('/history',function(req,res){
-	console.log(req.body);
-	var obj = {item:req.body.item,quantity:req.body.quantity,price:req.body.price,res_name:req.body.res_name,email:req.user.username};
-	console.log("hi");
+	db.collection("users").find({username:req.user.username,},{projection:{_id:0}}).toArray(function(err,result){
+
+	var obj = {item:req.body.item,quantity:req.body.quantity,price:req.body.price,res_name:req.body.res_name,email:req.user.username,ispaid:"no",lat:req.body.lat,long:req.body.long,address:result[0].address};
+
 	db.collection("history").insertOne(obj,function(err){
 		if(err){
 			console.log(err);
@@ -562,9 +594,29 @@ app.post('/history',function(req,res){
 
 
 	});
+});
 	res.redirect('/testtxn');
 });
 
+app.post("/change_user_profile",function(req,res){
+	myquery= {username:req.body.username};
+	newvalues={username:req.body.username,name:req.body.name,address:req.body.address};
+	db.collection("users").update(myquery,newvalues,function(err,res){
+		console.log(err);
+	});
+	res.redirect('/profile');
+
+});
+app.post('/delete_cart',function(req,res){
+	console.log(req.body);
+	var myquery = { email:req.body.email, item:req.body.items};
+			db.collection("cart").deleteOne(myquery, function(err, obj) {
+				if (err) throw err;
+				console.log(obj.result.n + " document(s) deleted");
+
+			});
+
+});
 
 var port = process.env.PORT || 3000
 app.listen(port, function() {

@@ -2,9 +2,39 @@
 
    <div class="container">
    	<div class="row " style="display: flex; flex-wrap: wrap; padding-top: 20px;">
+         <div class="col-md-2">
+            <form>
+          <ul class="list-group categories-ul">
+            <li class="list-group-item list-group-item-header">
+              <label class="form-check-label">
+                <i class="fas fa-rupee-sign"></i> Cost For Two
+              </label>
+            </li>
+            <li class="list-group-item">
+              <input class="form-check-input input-checkbox " type="checkbox" id="200-400"  value="200-400">
+              <label class="form-check-label" for="defaultCheck1">
+                200-400
+              </label>
+            </li>
+            <li class="list-group-item">
+              <input class="form-check-input input-checkbox" type="checkbox" id="400-800"  value="400-800" >
+              <label class="form-check-label" for="defaultCheck2">
+                400-800
+              </label>
+            </li>
+             <li class="list-group-item">
+              <input class="form-check-input input-checkbox" type="checkbox" id="800-1000"  value="800-1000">
+              <label class="form-check-label" for="defaultCheck2">
+                800-1000
+              </label>
+            </li>
+          </ul>
+       </form>
+       </div>
+        
    		<% for(var i = 0; i<resultant.length ; i++){ %>
-   		<div class="col-md-4">
-   			<div class="card border-light mb-3" style="max-width:18rem;">
+   		<div class="col-md-5 animal" data-category="<%= locals.resultant[i].cost%>">
+   			<div class="card border-light mb-3" style="max-width:18rem;" >
  
    				<img class="card-img-top d-block w-100 img-fluid img-thumbnail " src="<%= locals.resultant[i].link_image %>" > 
    				<div class="card-body">
@@ -24,6 +54,58 @@
    </div>
 </div>
 
+<script type="text/javascript">
+  var $filterCheckboxes = $('input[type="checkbox"]');
+var filterFunc = function() {
+  
+  var selectedFilters = {};
+
+  $filterCheckboxes.filter(':checked').each(function() {
+
+    if (!selectedFilters.hasOwnProperty(this.name)) {
+      selectedFilters[this.name] = [];
+    }
+
+    selectedFilters[this.name].push(this.value);
+  });
+
+  // create a collection containing all of the filterable elements
+  var $filteredResults = $('.animal');
+
+  // loop over the selected filter name -> (array) values pairs
+  $.each(selectedFilters, function(name, filterValues) {
+
+    // filter each .animal element
+    $filteredResults = $filteredResults.filter(function() {
+
+      var matched = false,
+        currentFilterValues = $(this).data('category').split(' ');
+
+      // loop over each category value in the current .animal's data-category
+      $.each(currentFilterValues, function(_, currentFilterValue) {
+
+        // if the current category exists in the selected filters array
+        // set matched to true, and stop looping. as we're ORing in each
+        // set of filters, we only need to match once
+
+        if ($.inArray(currentFilterValue, filterValues) != -1) {
+          matched = true;
+          return false;
+        }
+      });
+
+      // if matched is true the current .animal element is returned
+      return matched;
+
+    });
+  });
+
+  $('.animal').hide().filter($filteredResults).show();
+}
+
+$filterCheckboxes.on('change', filterFunc);  
+
+</script>
 
 
 

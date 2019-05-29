@@ -1,0 +1,74 @@
+<% include partials/header %>
+<style type="text/css">
+	
+.panel-order .row {
+	border-bottom: 1px solid #ccc;
+}
+.panel-order .row:last-child {
+	border: 0px;
+}
+.panel-order .row .col-md-1  {
+	text-align: center;
+	padding-top: 15px;
+}
+.panel-order .row .col-md-1 img {
+	width: 50px;
+	max-height: 50px;
+}
+.panel-order .row .row {
+	border-bottom: 0;
+}
+.panel-order .row .col-md-11 {
+	border-left: 1px solid #ccc;
+}
+.panel-order .row .row .col-md-12 {
+	padding-top: 7px;
+	padding-bottom: 7px; 
+}
+.panel-order .row .row .col-md-12:last-child {
+	font-size: 11px; 
+	color: #555;  
+	background: #efefef;
+}
+.panel-order .btn-group {
+	margin: 0px;
+	padding: 0px;
+}
+.panel-order .panel-body {
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+.panel-order .panel-deading {
+	margin-bottom: 0;
+} 
+</style>
+<div class="container">
+<div class="panel panel-default panel-order">
+  <div class="panel-heading">
+      <strong>Order history</strong>
+  </div>
+<%for(var i = 0 ; i< result.length ; i++) { %>
+
+<div class="panel-body">
+  	<div class="row">
+	  <div class="col-md-1"><img src="https://bootdey.com/img/Content/user_3.jpg" class="media-object img-thumbnail"></div>
+	  <div class="col-md-11">
+		<div class="row">
+		  <div class="col-md-12">
+			<span><strong>Order ID</strong></span> <span ><%=locals.result[i].orderid%></span><br>
+		
+			<%=locals.result[i].item %> X <%=locals.result[i].quantity%>
+			<br>
+
+		Total cost: <%=locals.result[i].txnamount%>
+			
+		  </div>
+		  <div class="col-md-12">
+			order made on: <%=locals.result[i].time%>
+		  </div>
+		</div>
+	  </div>
+	</div>
+</div>
+<%}%>
+<% include partials/footer %>
