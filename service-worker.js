@@ -1,68 +1,54 @@
-var dataCacheName = 'orderista';
-var cacheName = 'orderista';
-var filesToCache = [
-  '/',
- "./fonts",
- "./fonts/roboto",
- "./fonts/roboto/Roboto-Bold.woff",
- "./fonts/roboto/Roboto-Bold.woff2",
- "./fonts/roboto/Roboto-Light.woff",
- "./fonts/roboto/Roboto-Light.woff2",
- "./fonts/roboto/Roboto-Medium.woff",
- "./fonts/roboto/Roboto-Medium.woff2",
- "./fonts/roboto/Roboto-Regular.woff",
- "./fonts/roboto/Roboto-Regular.woff2",
- "./fonts/roboto/Roboto-Thin.woff",
- "./fonts/roboto/Roboto-Thin.woff2",
- "./images",
- "./images/icons",
- "./images/icons/icon-128x128.png",
- "./images/icons/icon-144x144.png",
- "./images/icons/icon-152x152.png",
- "./images/icons/icon-192x192.png",
- "./images/icons/icon-256x256.png",
- "./index.html",
- "./manifest.json",
- "./scripts",
- "./scripts/app.js",
- "./scripts/jquery-3.3.1.js",
- "./scripts/materialize.js",
- "./service-worker.js",
- "./styles",
- "./styles/materialize.css",
- "./styles/style.css"
+'use strict';
+
+// CODELAB: Update cache names any time any of the cached files change.
+const CACHE_NAME = 'static-cache-v1';
+
+// CODELAB: Add list of files to cache here.
+const FILES_TO_CACHE = [
 ];
 
-self.addEventListener('install', function(e) {
+self.addEventListener('install', (evt) => {
   console.log('[ServiceWorker] Install');
-  e.waitUntil(
-    caches.open(cacheName).then(function(cache) {
-      console.log('[ServiceWorker] Caching app shell');
-      return cache.addAll(filesToCache);
+  evt.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('[ServiceWorker] Pre-caching offline page');
+      return cache.addAll(FILES_TO_CACHE);
     })
-  );
+);
+
+  self.skipWaiting();
 });
 
-self.addEventListener('activate', function(e) {
+self.addEventListener('activate', (evt) => {
   console.log('[ServiceWorker] Activate');
-  e.waitUntil(
-    caches.keys().then(function(keyList) {
-      return Promise.all(keyList.map(function(key) {
-        if (key !== cacheName && key !== dataCacheName) {
+  evt.waitUntil(
+    caches.keys().then((keyList) => {
+      return Promise.all(keyList.map((key) => {
+        if (key !== CACHE_NAME) {
           console.log('[ServiceWorker] Removing old cache', key);
           return caches.delete(key);
         }
       }));
     })
-  );
-  return self.clients.claim();
+);
+
+  self.clients.claim();
 });
 
-self.addEventListener('fetch', function(e) {
-  console.log('[Service Worker] Fetch', e.request.url);
-  e.respondWith(
-    caches.match(e.request).then(function(response) {
-      return response || fetch(e.request);
-    })
-  );
+self.addEventListener('fetch', (evt) => {
+  console.log('[ServiceWorker] Fetch', evt.request.url);
+  if (evt.request.mode !== 'navigate') {
+  // Not a page navigation, bail.
+  return;
+}
+evt.respondWith(
+    fetch(evt.request)
+        .catch(() => {
+          return caches.open(CACHE_NAME)
+              .then((cache) => {
+                return cache.match('offline.html');
+              });
+        })
+);
+
 });

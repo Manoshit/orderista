@@ -9,6 +9,7 @@ var User = require("./models/user");
 var restro = require("./models/restro");
 var menu = require("./models/menu");
 var cart =require("./models/cart");
+var history = require("./models/history");
 var expressValidator = require('express-validator');
 const session = require('express-session');
 var nodemailer = require('nodemailer');
@@ -17,8 +18,9 @@ var mergeWith = require('lodash.mergewith');
 var _ = require('lodash');
 var signup_mailer = require('./mailer.js');
 var contact_mailer = require('./contact_mailer');
-var checksum = require("./paytm/models/checksum.js");
-var config = require('./paytm/config/config.js');
+var checksum = require("./models/checksum.js");
+var config = require('./config/config.js');
+var uniqid = require('uniqid');
 var app = express()
 
 //flash middleware
@@ -131,15 +133,14 @@ app.get('/logout',function(req,res){
 
 app.get('/profile',function(req,res) {
 
-	db.collection("restro").find({Email:req.user.username}, { projection: { _id: 0, name: 1, city:1 ,state : 1, address : 1 , phoneno : 1 }}).toArray(function(err, result) {
+	db.collection("users").find({username:req.user.username}, { projection: { _id: 0, name: 1, address:1 ,username : 1,}}).toArray(function(err, result) {
 		if (err) throw err;
-		console.log(result);
-		var resname = result[0].name;
-		var city = result[0].city;
-		var state = result[0].state;
+
+		var name = result[0].name;
 		var address = result[0].address;
-		var phoneno = result[0].phoneno;
-		res.render('profile', {rest:resname ,city:city , state:state, address:address, phoneno:phoneno});
+		var username = result[0].username;
+		
+		res.render('profile', {name:username ,address:address ,username:username,});
 
 	});
 
@@ -180,10 +181,10 @@ app.get('/update',function(req,res){
 
 			res.render('update',{result:result});
 		});
-	
+
 		
-	
-});
+
+	});
 
 
 });
@@ -235,36 +236,46 @@ db.collection("update").find({res_name:found[0].name},{projection:{_id:0}}).toAr
 
 app.get('/cart',function(req,res){
 	db.collection("cart").find({email:req.user.username},{projection:{_id:0}}).toArray(function(err,result){
-	
-var sum = 0;
+
+		var sum = 0;
 		if(result.length>0){
 
-		for(var i = 0 ; i < result.length; i++){
-			sum = sum + (result[i].price * result[i].quantity);
-		}
+			for(var i = 0 ; i < result.length; i++){
+				sum = sum + (result[i].price * result[i].quantity);
+			}
 
 
-		
+
 			res.render('cart',{result:result,sum:sum});
 
 		}
-else{
-	res.send("Your Cart is empty");
-}
+		else{
+			res.send("Your Cart is empty");
+		}
 
 	})
 });
 
-app.get('/pgredirect', function(req,res){
-        console.log("in pgdirect");
-        res.render('pgredirect.ejs');
-    });
- app.get('/testtxn', function(req,res){
-         res.render('testtxn.ejs',{'config' : config});
-     });
 
- app.get("/service-worker.js", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "public", "service-worker.js"));
+app.get('/testtxn', function(req,res){
+	db.collection("cart").find({email:req.user.username},{projection:{_id:0}}).toArray(function(err,result){
+		var sum = 0;
+		for(var i = 0 ; i < result.length; i++){
+			sum = sum + (result[i].price * result[i].quantity);
+		}
+		var oid = uniqid();
+		var cid = uniqid();
+
+		res.render('testtxn.ejs',{'config' : config ,sum:sum,oid:oid,cid:cid});
+	});
+
+});
+
+
+
+
+app.get("/service-worker.js", (req, res) => {
+	res.sendFile(path.resolve(__dirname, "public", "service-worker.js"));
 });
 
 /***** END OF GET ROUTES ***/
@@ -301,7 +312,7 @@ app.post('/signup', function(req,res)
 		req.session.success = true;
 
 
-		var newuser = new User({name:req.body.name, username:req.body.username, isAdmin:"false"});
+		var newuser = new User({name:req.body.name, username:req.body.username, address:req.body.address , isAdmin:"false"});
 
 		User.register(newuser,req.body.password, function(err,user){
 
@@ -343,7 +354,7 @@ app.post('/addrestro',function(req,res){
 		if (err) throw err;
 		console.log("1 document updated");
 	});
-   var obj ={Email:req.body.Email,name:req.body.name,api:req.body.api,address:req.body.address,type:req.body.type,phoneno:req.body.phoneno,cost:req.body.cost,link_image:req.body.link_image,is_menu_updated:"false",lat:req.body.profile_lat,long:req.body.profile_lng};
+	var obj ={Email:req.body.Email,name:req.body.name,api:req.body.api,address:req.body.address,type:req.body.type,phoneno:req.body.phoneno,cost:req.body.cost,link_image:req.body.link_image,is_menu_updated:"false",lat:req.body.profile_lat,long:req.body.profile_lng};
 	db.collection("restro").insertOne(obj,function(err){
 
 		if(err)
@@ -413,7 +424,7 @@ app.post('/add',function(req,res){
 
 });
 app.post('/update',function(req,res){
- 
+
 
 	var resname;
 
@@ -435,15 +446,15 @@ app.post('/update',function(req,res){
 
 
 app.post('/request', function (req, res) {
-db.collection("restro").find({Email:req.user.username}, { projection: { _id:0, name: 1 }}).toArray(function(err, result) {
+	db.collection("restro").find({Email:req.user.username}, { projection: { _id:0, name: 1 }}).toArray(function(err, result) {
 		resname = result[0].name;
-     var myquery = { "item": req.body.status , "res_name":resname};
-     console.log(req.body.status);
-  db.collection("menu").deleteOne(myquery, function(err, obj) {
-    if (err) throw err;
-    console.log("1 document deleted");
-  });
-});
+		var myquery = { "item": req.body.status , "res_name":resname};
+		console.log(req.body.status);
+		db.collection("menu").deleteOne(myquery, function(err, obj) {
+			if (err) throw err;
+			console.log("1 document deleted");
+		});
+	});
 	console.log("Document Delete hiogya"); 
 });
 
@@ -453,67 +464,106 @@ app.post('/cart',function(req,res){
 
 
 	var obj ={item:req.body.item,quantity:req.body.value,price:req.body.price,lat:req.body.lat,long:req.body.long,res_name:req.body.res_name,email:req.user.username};
-	db.collection("cart").find({item:req.body.item},{projection:{_id:0,item:1}}).toArray(function(err,result){
-		if(result.length>0){
-myquery= {item:req.body.item};
-newvalues={item:req.body.item,quantity:req.body.value,price:req.body.price,lat:req.body.lat,long:req.body.long,res_name:req.body.res_name,email:req.user.username};
-db.collection("cart").update(myquery,newvalues,function(err,res){
-console.log(err);
-});
-		}
-else{
+	db.collection("cart").find({email:req.user.username,res_name:req.body.res_name},{projection:{_id:0}}).toArray(function(err,result){
+		console.log(result);
+		if(result.length == 0)
 
-	db.collection("cart").insertOne(obj,function(err){
-		if(err)
 		{
+			console.log("nhi h");
+			var myquery = { email:req.user.username };
+			db.collection("cart").deleteMany(myquery, function(err, obj) {
+				if (err) throw err;
+				console.log(obj.result.n + " document(s) deleted");
+
+			});
+
+
+		}
+
+
+		db.collection("cart").find({item:req.body.item,email:req.user.username},{projection:{_id:0,item:1}}).toArray(function(err,result){
+			if(result.length>0){
+				myquery= {item:req.body.item};
+				newvalues={item:req.body.item,quantity:req.body.value,price:req.body.price,lat:req.body.lat,long:req.body.long,res_name:req.body.res_name,email:req.user.username};
+				db.collection("cart").update(myquery,newvalues,function(err,res){
+					console.log(err);
+				});
+			}
+			else{
+
+				db.collection("cart").insertOne(obj,function(err){
+					if(err)
+					{
+						console.log(err);
+					}
+				});
+			}
+		});
+
+
+
+
+	});
+});
+app.post('/response', function(req,res){
+	console.log("in response post");
+	var paramlist = req.body;
+	var paramarray = new Array();
+	console.log(paramlist);
+	if(checksum.verifychecksum(paramlist, config.PAYTM_MERCHANT_KEY))
+	{
+		console.log("true");
+		res.render('response.ejs',{ 'restdata' : "true" ,'paramlist' : paramlist});
+	}else        {
+		console.log("false");
+		res.render('response.ejs',{ 'restdata' : "false" , 'paramlist' : paramlist});
+	};
+});
+
+
+app.post('/testtxn',function(req, res) {
+	console.log("POST Order start");
+	var paramlist = req.body;
+	var paramarray = new Array();
+	console.log(paramlist);
+	for (name in paramlist)
+	{
+		if (name == 'PAYTM_MERCHANT_KEY') {
+			var PAYTM_MERCHANT_KEY = paramlist[name] ; 
+			console.log("milgyi");
+		}else
+		{
+			console.log("nhi mili");
+			paramarray[name] = paramlist[name] ;
+		}
+	}
+	console.log(paramarray);
+        paramarray['CALLBACK_URL'] = 'http://localhost:3000/response';  // in case if you want to send callback
+        console.log(PAYTM_MERCHANT_KEY);
+        checksum.genchecksum(paramarray, PAYTM_MERCHANT_KEY, function (err, result) 
+        {
+        	console.log("hi");
+        	console.log(result);
+        	console.log("hello");
+        	res.render('pgredirect.ejs',{ 'restdata' : result });
+        });
+
+        console.log("POST Order end");
+
+    });
+app.post('/history',function(req,res){
+	console.log(req.body);
+	var obj = {item:req.body.item,quantity:req.body.quantity,price:req.body.price,res_name:req.body.res_name,email:req.user.username};
+	console.log("hi");
+	db.collection("history").insertOne(obj,function(err){
+		if(err){
 			console.log(err);
 		}
+
+
 	});
-	}
+	res.redirect('/testtxn');
 });
-
-
-});
-
-app.post('/response', function(req,res){
-    console.log("in response post");
-    var paramlist = req.body;
-        var paramarray = new Array();
-        console.log(paramlist);
-        if(checksum.verifychecksum(paramlist, config.PAYTM_MERCHANT_KEY))
-        {
-            console.log("true");
-            res.render('response.ejs',{ 'restdata' : "true" ,'paramlist' : paramlist});
-        }else        {
-            console.log("false");
-            res.render('response.ejs',{ 'restdata' : "false" , 'paramlist' : paramlist});
-        };
-    });
-
-
-     app.post('/testtxn',function(req, res) {
-        console.log("POST Order start");
-        var paramlist = req.body;
-        var paramarray = new Array();
-        console.log(paramlist);
-        for (name in paramlist)
-        {
-            if (name == 'PAYTM_MERCHANT_KEY') {
-               var PAYTM_MERCHANT_KEY = paramlist[name] ;
-            }else{
-                paramarray[name] = paramlist[name] ;
-            }
-        }
-        console.log(paramarray);
-        paramarray['CALLBACK_URL'] = 'http://localhost:3000/response';  // in case if you want to send callback        console.log(PAYTM_MERCHANT_KEY);
-        checksum.genchecksum(paramarray, PAYTM_MERCHANT_KEY, function (err, result)
-        {
-            console.log(result);
-            res.render('pgredirect.ejs',{ 'restdata' : result });
-        });
-        console.log("POST Order end");
-     });
-
 
 
 var port = process.env.PORT || 3000

@@ -61,12 +61,7 @@
 							
 						</li>
 						<%  	} else if (currentuser.isAdmin){ %>
-						<li class=" nav nav-item">
-							<a  href="/cart" class="nav-link">CART
 						
-							</a>
-							
-						</li>
 
 						<li class=" nav nav-item">
 							<div class="dropdown">
@@ -74,14 +69,14 @@
 									DASHBOARD
 								</button>
 								<div class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-									<a class="dropdown-item" href="/profile">PROFILE</a>
+									<a class="dropdown-item" href="/orders">Orders</a>
 									
 									<div class="dropdown-divider"></div>
 									<div class="dropdown-submenu">
-										<a  class="dropdown-item" tabindex="-1" href="#">RESTAURANT MENU</a>
+										<a  class="dropdown-item" tabindex="-1" href="#"> Menu</a>
 										<ul class="dropdown-menu">
-											<a class="dropdown-item" tabindex="-1" href="/add">ADD</a>
-											<a class="dropdown-item" href="/update">UPDATE</a>
+											<a class="dropdown-item" tabindex="-1" href="/add">Add</a>
+											<a class="dropdown-item" href="/update">Update</a>
 										</ul>
 									</div>
 
@@ -98,6 +93,24 @@
 						</li>
 						
 						<% } else if(currentuser) { %>
+						<li class=" nav nav-item">
+							<div class="dropdown">
+								<button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Account
+								</button>
+								<div class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+									<a class="dropdown-item" href="/order_history">Orders</a>
+									<a class="dropdown-item" href="/profile">Profile</a>
+
+									
+									
+
+								</div>
+
+							</div>
+
+							
+							</li>
 						<li class=" nav nav-item">
 							<a  href="/cart" class="nav-link">CART
 							

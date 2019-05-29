@@ -1,49 +1,52 @@
   <% include partials/header %>
 
-  <div class="conatiner">
-  	<div class="row" style="padding: 20px;">
-  		<div class="col">
-  			<div class="card w-50" style=" margin: 0 auto; float: none; margin-bottom: 10px;" >
-  				<div class="card-body">
-  					<form method="POST" action="/addrestro">
-  						<div class="form-row">
-  							<div class="form-group col-md-12">
-  								<label> Restaurant Name</label>
-  								<input type="text" class="form-control" id="inputEmail4" value ="<%= locals.rest %>" name="name">
-  							</div>
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <div class="card " id="hello" style=" margin: 0 auto; float: none; margin-bottom: 10px;" >
+        <div class="card-body">
+          <p style="font-size: 1.5rem;"> SIGN UP</p>
+          <form method="POST" action="/">
+            <div class="md-form mb-5">
+              <i class="fas fa-user prefix grey-text"></i>
+              <label >Your name</label>
+              <input type="text" id="orangeForm-name" class="form-control " name="name" value="<%= locals.name%>" required >
 
-  						</div>
+            </div>
+            <div class="md-form mb-5">
+            <i class="fas fa-address-card"></i>
+              <label >Your address</label>
+              <input type="text" id="orangeForm-name" class="form-control " name="address" value="<%= locals.address%>" required>
 
-  						<div class="form-row">
-  							<div class="form-group col-md-6">
-  								<label for="inputCity">City</label>
-  								<input type="text" class="form-control" id="inputCity" value =" <%= locals.city %>" name="city">
-  							</div>
-  							<div class="form-group col-md-6">
-  								<label for="inputState">State</label>
-  								<input type="text" class="form-control" value ="<%= locals.state %>" name="state">
-  							</div>
-  							
-  						</div>
-  						<div class="form-group">
-  							<label >Address</label>
-  							<input type="text" class="form-control" id="inputAddress" value ="<%= locals.address %>" name="address">
-  						</div>
-  						<div class="form-group">
-  							<label >Phone Number</label>
-  							<input type="text" class="form-control" id="inputAddress" value ="<%= locals.phoneno %>" name="phoneno">
-  						</div>
+            </div>
+            <div class="md-form mb-5">
+              <i class="fas fa-envelope prefix grey-text"></i>
+              <label >Your email</label>
+              <input type="email" id="orangeForm-email" class="form-control " name="username"  value="<%= locals.username%>" readonly>
+              
+            </div>
 
-  						
-  						<div class="form-row">
-  							<div class="form-group col-md-12">
-  								<button type="submit" class="btn btn-dark btn-block " >SAVE CHANGES</button>
-  							</div>
-  						</div>
-  					</form>
-  				</div>
-  			</div>
-  		</div>
-  	</div>
+          
+            <div class="form-row">
+                <div class="form-group col-md-12" >
+                  <button type="submit" class="btn btn-dark btn-block ">Save Changes</button>
+                </div>
+              </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
   </div>
+  <div  class="bg-dark">
+<div class="container">
+    <div class="row" style="padding: 20px;" >
+      <div class="col-md-12" >
+        <img   class=" img-fluid" src="images/benefit.png">
+
+      </div>
+      
+    </div>
+  </div>
+</div>
   <% include partials/footer %>
