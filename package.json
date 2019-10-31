@@ -26,7 +26,7 @@
     "lodash.merge": "^4.6.1",
     "lodash.mergewith": "^4.6.1",
     "mongodb": "^3.2.2",
-    "mongoose": "^5.4.15",
+    "mongoose": "^5.7.5",
     "mongoose-file": "0.0.2",
     "nodemailer": "^5.1.1",
     "nodemon": "^1.18.10",
